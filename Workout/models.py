@@ -29,3 +29,18 @@ class Performance(models.Model):
 
     def __str__(self):
         return f'{self.exercise.name} - {self.date}'
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    # To determine age
+    birth_date = models.DateField(null=True, blank=True)
+
+    # Weight
+    weight = models.FloatField(null=True, blank=True)
+
+    # Activity level (description of activity, e.g., sedentary, active)
+    activity = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.user.username
