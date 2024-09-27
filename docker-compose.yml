@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Database
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      # The name of the database
+      POSTGRES_DB: workout_db
+      # The username for the database
+      POSTGRES_USER: admin
+      # The password for the database
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      # Persist data
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d workout_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    # Django Server
+    build: .
+    # Start the Django server with a wait-for-it script
+    command: ["./wait-for-it.sh", "db:5432", "--timeout=30", "--strict", "--", "python", "manage.py", "runserver", "0.0.0.0:8080"]
+    volumes:
+      # Bind mount the current directory to /app in the container
+      - .:/app
+      # Mount media directory to persist uploads
+      - media:/app/media
+    ports:
+      # Map port 8080 to the host
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Connection string
+      DATABASE_URL: postgres://admin:12345@db:5432/workout_db
+
+volumes:
+  # Named volume for persistent database storage
+  postgres_data:
+  media:
