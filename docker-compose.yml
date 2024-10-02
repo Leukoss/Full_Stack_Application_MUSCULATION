@@ -23,7 +23,7 @@ services:
     # Django Server
     build: .
     # Start the Django server with a wait-for-it script
-    command: ["./wait-for-it.sh", "db:5432", "--timeout=30", "--strict", "--", "python", "manage.py", "runserver", "0.0.0.0:8080"]
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8080"]
     volumes:
       # Bind mount the current directory to /app in the container
       - .:/app
