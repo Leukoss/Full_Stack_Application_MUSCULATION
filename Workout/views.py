@@ -3,9 +3,11 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.views import View
+from .forms import SignUpForm
+
 
 class SignUpView(View):
-    form_class = UserCreationForm
+    form_class = SignUpForm
     template_name = 'signup.html'
 
     def get(self, request):

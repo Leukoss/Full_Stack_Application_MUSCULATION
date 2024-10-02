@@ -1,11 +1,39 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
+
 <head>
+    <!-- Metadata (page information) -->
+    <!-- Keywords -> keywords, viewport -> optimize mobile layout -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <meta name="author" content="Lucas SALI--ORLIANGE & Apollinaire TEXIER">
+    <meta name="keywords" content="Django, HTML, JS, CSS, Python, PostgreSQL, 
+    Fitness, Performance">
+
+    <!-- Page Title -->
+    <title>Connexion</title>
+
+    <!-- Links this page and its content to a CSS stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+
+    <!-- Links this page to an icon -->
+    <link rel="icon" href="{% static 'images/logo_web.jpg' %}">
 </head>
+
 <body>
+    <!-- Navigation bar -->
+    <nav class="navbar">
+        <!-- Div containing links to other pages -->
+        <a href="{% url 'login' %}">Connexion</a>
+        <a href="{% url 'signup' %}">Inscription</a>
+        <a href="{% url 'logout' %}">Présentation du Projet</a>
+    </nav>
+
+    <!-- Contains the body of the web page -->
     <h1>Login</h1>
     <form method="post">
         {% csrf_token %}
@@ -14,5 +42,34 @@
         <button type="submit">Login</button>
     </form>
     <p><a href="{% url 'signup' %}">Sign Up</a></p>
+
+    <!-- Contains the footer of the web page -->
+    <footer>
+        <div class="footer">
+            <!-- University Gustave Eiffel Logo -->
+            <img src="{%  static 'images/logo_univ.png' %}" class="logo" 
+                 alt="University Gustave Eiffel Logo">
+
+            <!-- Copyright -->
+            <div class="copyright">
+                Copyright © 2024 / 2025
+            </div>
+
+            <!-- Credits -->
+            <div class="credits">
+                Lucas SALI--ORLIANGE & Apollinaire TEXIER, encadrés par Morgan 
+                COURIVAUD
+            </div>
+
+            <!-- Unit -->
+            <div class="unit">
+                DSIA-5102A: Full Stack Application Data
+            </div>
+
+            <!-- ESIEE Paris Logo -->
+            <img src="{% static 'images/logo_esiee.png' %}" class="logo" 
+                 alt="ESIEE Paris Logo">
+        </div>
+    </footer>
 </body>
 </html>

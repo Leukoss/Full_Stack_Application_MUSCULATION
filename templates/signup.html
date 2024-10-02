@@ -1,17 +1,143 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
+    <!-- Metadata (page information) -->
+    <!-- Keywords -> keywords, viewport -> optimize mobile layout -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Lucas SALI--ORLIANGE & Apollinaire TEXIER">
+    <meta name="keywords" content="Django, HTML, JS, CSS, Python, PostgreSQL,
+    Fitness, Performance">
+
+    <!-- Page Title -->
     <title>Sign Up</title>
+
+    <!-- Links this page and its content to a CSS stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
+    <!-- Links this page to an icon -->
+    <link rel="icon" href="{% static 'images/logo_web.jpg' %}">
 </head>
+
 <body>
-    <h2>Sign Up</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+    <!-- Navigation bar -->
+    <nav class="navbar">
+        <!-- Div containing links to other pages -->
+        <a href="{% url 'login' %}">Connexion</a>
+        <a href="{% url 'signup' %}">Inscription</a>
+        <a href="{% url 'logout' %}">Présentation du Projet</a>
+    </nav>
+    
+    <div class="content">
+        <h1>Formulaire d'inscription :</h1>
+
+        <!-- Form to create an account with all the fields -->
+        <form method="post">
+            {% csrf_token %}
+        
+            <!-- USERNAME -->
+            <div class="form-group">
+                <label for="id_username">Nom d'utilisateur :</label>
+                {{ form.username }}
+                <div class="error">{{ form.username.errors }}</div>
+            </div>
+        
+            <!-- EMAIL -->
+            <div class="form-group">
+                <label for="id_email">Adresse électronique :</label>
+                {{ form.email }}
+                <div class="error">{{ form.email.errors }}</div>
+            </div>
+        
+            <!-- PASSWORD -->
+            <div class="form-group">
+                <label for="id_password1">Mot de Passe :</label>
+                {{ form.password1 }}
+                <div class="error">{{ form.password1.errors }}</div>
+            </div>
+        
+            <!-- PASSWORD CONFIRMATION -->
+            <div class="form-group">
+                <label for="id_password2">Confirmer le Mot de Passe :</label>
+                {{ form.password2 }}
+                <div class="error">{{ form.password2.errors }}</div>
+            </div>
+        
+            <!-- AGE -->
+            <div class="form-group">
+                <label for="id_age">Âge :</label>
+                {{ form.age }}
+                <div class="error">{{ form.age.errors }}</div>
+            </div>
+        
+            <!-- WEIGHT -->
+            <div class="form-group">
+                <label for="id_weight">Poids (kg) :</label>
+                {{ form.weight }}
+                <div class="error">{{ form.weight.errors }}</div>
+            </div>
+        
+            <!-- HEIGHT -->
+            <div class="form-group">
+                <label for="id_height">Taille (cm) :</label>
+                {{ form.height }}
+                <div class="error">{{ form.height.errors }}</div>
+            </div>
+        
+            <!-- ACTIVITY -->
+            <div class="form-group">
+                <label for="id_activity">Niveau d'activité :</label>
+                {{ form.activity }}
+                <div class="error">{{ form.activity.errors }}</div>
+            </div>
+        
+            <!-- COUNTRY OF RESIDENCE -->
+            <div class="form-group">
+                <label for="id_country">Pays de résidence :</label>
+                {{ form.country }}
+                <div class="error">{{ form.country.errors }}</div>
+            </div>
+        
+            <button type="submit" class="btn">Inscription</button>
+        </form>
+        
+        <br>
+        <br>
+    
+        <a href="{% url 'login' %}">Déjà un compte ? Connectez-vous ici </a>
+    </div>
+
+    <!-- Contains the footer of the web page -->
+    <footer>
+        <div class="footer">
+            <!-- University Gustave Eiffel Logo -->
+            <img src="{%  static 'images/logo_univ.png' %}" class="logo"
+                 alt="University Gustave Eiffel Logo">
+
+            <!-- Copyright -->
+            <div class="copyright">
+                Copyright © 2024 / 2025
+            </div>
+
+            <!-- Credits -->
+            <div class="credits">
+                Lucas SALI--ORLIANGE & Apollinaire TEXIER, encadrés par Morgan
+                COURIVAUD
+            </div>
+
+            <!-- Unit -->
+            <div class="unit">
+                DSIA-5102A: Full Stack Application Data
+            </div>
+
+            <!-- ESIEE Paris Logo -->
+            <img src="{% static 'images/logo_esiee.png' %}" class="logo"
+                 alt="ESIEE Paris Logo">
+        </div>
+    </footer>
 </body>
 </html>

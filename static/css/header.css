@@ -1,0 +1,38 @@
+/* GENERAL STYLES */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+}
+
+/* NAVIGATION BAR */
+
+/* General style for the navigation bar */
+.navbar {
+    background-color: #1A1A1A;
+    padding: 25px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+/* Style for the text inside <a></a> tags */
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 30px;
+    font-weight: bold;
+    justify-content: center;
+}
+
+/* Style for the text inside <a></a> tags when hovered */
+.navbar a:hover {
+    color: #E0E0E0;
+    text-decoration: none;
+    margin-right: 30px;
+    font-weight: bold;
+}
+
+/* Ensures that the last <a></a> tag has equal right and left margin */
+.navbar a:last-child {
+    margin-right: 0;
+}

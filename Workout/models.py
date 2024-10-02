@@ -34,13 +34,31 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # To determine age
-    birth_date = models.DateField(null=True, blank=True)
+    age = models.IntegerField(null=True, blank=True)
 
-    # Weight
+    # Weight (kg)
     weight = models.FloatField(null=True, blank=True)
+
+    # Height (cm)
+    height = models.FloatField(null=True, blank=True)
 
     # Activity level (description of activity, e.g., sedentary, active)
     activity = models.CharField(max_length=100)
 
+    # Country of residence
+    country = models.CharField(max_length=100, default="France")
+
+    # IMC
+    bmi = models.FloatField(null=True, blank=True)
+
     def __str__(self):
         return self.user.username
+
+    def calculate_bmi(self):
+        if self.weight and self.height:
+            return round(self.weight / ((self.height / 100) **2), 2)
+        return None
+
+    def save(self, *args, **kwargs):
+        self.bmi = self.calculate_bmi()
+        super(UserProfile, self).save(*args, **kwargs)

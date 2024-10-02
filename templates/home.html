@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <!-- Metadata (page information) -->
@@ -16,6 +16,8 @@
     <title>Coach est là... LE RETOUR</title>
 
     <!-- Links this page and its content to a CSS stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
 
     <!-- Links this page to an icon -->
@@ -27,6 +29,7 @@
     <nav class="navbar">
         <!-- Div containing links to other pages -->
         <a href="{% url 'login' %}">Connexion</a>
+        <a href="{% url 'signup' %}">Inscription</a>
         <a href="{% url 'logout' %}">Présentation du Projet</a>
     </nav>
 
