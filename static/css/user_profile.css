@@ -1,0 +1,108 @@
+html, body {
+    height: 100%; /* Assure que le document prend toute la hauteur */
+    margin: 0;    /* Enlève les marges par défaut */
+}
+
+/* Conteneur principal qui englobe tout */
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Assure que le conteneur prend toute la hauteur de la page */
+}
+
+
+
+/* hidden button to log out*/
+.hidden-button{
+    background: none;  
+    border: none;      
+    color: inherit;    
+    font: inherit;     
+    cursor: pointer;   
+    padding: 0;        
+    margin: 0;         
+    text-decoration: none;  
+
+    color: #fff;
+    text-decoration: none;
+    margin-right: 30px;
+    font-weight: bold;
+    justify-content: center;
+}
+
+/* NAVBAR - RIGHT SECTION */
+
+/* area of pp with the username */
+.profile-info {
+    display: flex;  
+    align-items: center;  
+
+}
+
+.profile-image {
+    width: 40px;  
+    height: 40px; 
+    border-radius: 50%;  
+    margin-right: 10px;  
+}
+.username {
+    font-weight: bold;  
+    color: #fff;  
+}
+
+/* LIST OF EXERCISES */
+.exercise-list {
+    /* max-height: 400px; Hauteur maximale de la liste */
+    overflow-y: auto; 
+    /* border: 1px solid #ccc;  */
+    margin: 2%; 
+    padding: 10px; 
+    background-color: #f9f9f9; 
+    width:20%;
+    border-radius: 5px;
+    border:1px solid #ccc;
+}
+
+.exercise-list ul {
+    list-style-type: none; 
+    padding: 0; 
+}
+
+.exercise-list li {
+    padding: 8px; 
+    border-bottom: 1px solid #ddd; 
+}
+.exercise-list li a {
+    text-decoration: none; 
+    color: #1A1A1A; /* Couleur du texte */
+}
+
+.exercise-list li a:hover {
+    /* color: #007BFF; Change la couleur au survol */
+    text-decoration: underline; /* Souligne le texte au survol */
+}
+
+/* EXERCISES DATA */
+
+.main-content{
+    display: flex;
+    flex-direction: space-between;
+    flex:1;
+}
+
+.exercise-panel{
+    background-color: #f9f9f9; 
+    border-radius: 5px;
+    border:1px solid #ccc;
+    
+    padding : 10px;
+    margin-top : 2%;
+    margin : 2%;
+    text-align: center;
+    width: 100%;
+    align-items: center;
+}
+
+.exercise-list:hover, .exercise-panel:hover{
+    border:1px solid #1A1A1A;
+}

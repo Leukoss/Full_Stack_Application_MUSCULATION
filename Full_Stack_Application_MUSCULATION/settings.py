@@ -149,8 +149,8 @@ MEDIA_ROOT = BASE_DIR / 'media'  # The filesystem path to the directory that wil
 # AUTHENTIFICATION
 
 # Redirect URLs after login or logout
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/profile/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Require email verification for new signups
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
