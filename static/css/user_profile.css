@@ -74,12 +74,12 @@ html, body {
 }
 .exercise-list li a {
     text-decoration: none; 
-    color: #1A1A1A; /* Couleur du texte */
+    color: #1A1A1A; 
 }
 
 .exercise-list li a:hover {
-    /* color: #007BFF; Change la couleur au survol */
-    text-decoration: underline; /* Souligne le texte au survol */
+    /* color: #007BFF; */
+    text-decoration: underline; 
 }
 
 /* EXERCISES DATA */
@@ -96,7 +96,7 @@ html, body {
     border:1px solid #ccc;
     
     padding : 10px;
-    margin-top : 2%;
+    margin-left : 0%;
     margin : 2%;
     text-align: center;
     width: 100%;

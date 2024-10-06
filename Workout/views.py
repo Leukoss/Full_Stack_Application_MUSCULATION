@@ -11,7 +11,9 @@ from .models import Exercise
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_backends
 from django.views.generic import DetailView
-
+from django.http import JsonResponse
+from .models import Exercise
+from django.shortcuts import render, redirect, get_object_or_404
 
 class SignUpView(View):
     form_class = SignUpForm
@@ -74,10 +76,15 @@ class UserProfileView(View):
         # display the page of the connected user
         return render(request, self.template_name, {'user': request.user, 'exercises': exercises})
 
-class ExerciseDetailView(DetailView):
-    model = Exercise
-    template_name = 'exercise_detail.html'
-
+@login_required
+def get_exercise_detail(request, exercise_id):
+    # Récupérer l'exercice correspondant à l'utilisateur connecté
+    exercise = get_object_or_404(Exercise, id=exercise_id, user=request.user)
+    data = {
+        'name': exercise.name,
+        'illustration': exercise.illustration.url if exercise.illustration else None,
+    }
+    return JsonResponse(data)
 
 def home(request):
     return render(request, 'home.html', {'user': request.user})

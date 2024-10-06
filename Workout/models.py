@@ -1,7 +1,12 @@
 from django.contrib.auth.models import User
 from django.db import models
+import uuid
 
 class Exercise(models.Model):
+
+    # id of execrise that could identify an exercise - string
+    exercise_id = models.CharField(max_length=30,unique=True,null=True)
+    
     # Name of the exercise ("bench press")
     name = models.CharField(max_length=100)
 
@@ -10,7 +15,13 @@ class Exercise(models.Model):
 
     # Link Exercise to User
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    
+    # to generate a unique id for each exercise if is not specifier
+    def save(self, *args, **kwargs):
+        if not self.exercise_id:
+            self.exercise_id = str(uuid.uuid4())[:8]
+        super().save(*args,**kwargs)
+    
     def __str__(self):
         return self.name
 
