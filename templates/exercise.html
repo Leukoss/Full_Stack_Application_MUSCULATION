@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -13,12 +12,12 @@
     Fitness, Performance">
 
     <!-- Page Title -->
-    <title>Mon profil</title>
+    <title>Mes exercices</title>
 
     <!-- Links this page and its content to a CSS stylesheet -->
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
-    <link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/exercise.css' %}">
 
     <!-- Links this page to an icon -->
     <link rel="icon" href="{% static 'images/logo_web.jpg' %}">
@@ -63,15 +62,7 @@
             </div>
             
             <div class="exercise-panel">
-                <div class="information-profile">
-                    Veuillez sélectionner un exercice afin de pouvoir consulter vos données.
-                    <p>âge : {{user.userprofile.age}} ans</p>
-                    <p>taille : {{user.userprofile.height|floatformat:0}} cm</p>
-                    <p>poids : {{user.userprofile.weight|floatformat:0}} kg</p>
-                    <p>IMC : {{user.userprofile.bmi|floatformat:0}}</p>
-                </div>
-
-                <script src="{% static 'js/exercise_performance.js' %}"></script>
+                <!-- to fill -->
             </div>
         </div>
         <!-- Contains the footer of the web page -->

@@ -78,8 +78,8 @@ class UserProfileView(View):
         # display the page of the connected user
         return render(request, self.template_name, {'user': request.user, 'exercises': exercises})
 
-class PerformanceView(View):
-    template_name = 'performance.html'
+class ExerciseView(View):
+    template_name = 'exercise.html'
 
     def get(self, request):
         exercises = Exercise.objects.filter(user=request.user)
