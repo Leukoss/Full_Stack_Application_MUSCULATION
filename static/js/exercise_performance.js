@@ -14,31 +14,20 @@ document.addEventListener('DOMContentLoaded', function () {
             const exerciseName = this.getAttribute('data-name').toLowerCase();
 
             // send a request
-            fetch(`/exercise/${exerciseId}/performances`)
+            fetch(`/exercise/${exerciseId}/get_last_performances`)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data)
                     // if there is at least one performances
-                    if (data.performances.length > 0) {
-                        // Calculer le max_sets
-                        let max_sets = 0;
-                        data.performances.forEach(performance => {
-                            // Vérifie que weights est bien un tableau
-                            if (Array.isArray(performance.weights)) {
-                                // Met à jour max_sets si la longueur de weights est plus grande
-                                const setsCount = performance.weights.length;
-                                if (setsCount > max_sets) {
-                                    max_sets = setsCount;
-                                }
-                            }
-                        });
-                        // update
+                    if (data.performances.length > 0) {              
+
                         let table = `<h3>Performances ${exerciseName}</h3>`;
                         // Créer le tableau HTML avec les colonnes pour chaque set et les lignes pour chaque date
                         table += '<table border="1">';
                         table += '<thead><tr><th>Date</th>';
+
                         // Ajouter les colonnes pour chaque set
-                        for (let i = 0; i < max_sets; i++) {
+                        for (let i = 0; i < data.max_sets; i++) {
                             table += `<th>Set ${i+1} </th>`;
                         }
                         table += '</tr></thead>';
@@ -57,13 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
                                     table += '<td>-</td>'; // Si pas de poids ou de répétition pour ce set
                                 }
                             });
-
-                            // If the current performance has fewer sets than the max, add empty cells with '-'
-                            const missingSets = max_sets - performance.weights.length;
-                            for (let i = 0; i < missingSets; i++) {
-                                table += '<td>-</td>';
-                            }
-                            table += '</tr>';
                         });
                         table += '</tbody></table>';
 
@@ -76,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .catch(error => {
                     console.error('Erreur lors de la récupération des performances:', error);
-                    exercisePanel.innerHTML = '<p>Erreur lors de la récupération des performances.</p>';
+                    exercisePanel.innerHTML = '<p>Pas de performances enregistrées</p>';
                 });
         });
     });

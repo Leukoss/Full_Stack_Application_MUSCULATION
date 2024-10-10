@@ -72,6 +72,14 @@ class CustomLoginView(LoginView):
 class UserProfileView(View):
     template_name = 'user_profile.html'
 
+    def get(self, request):
+        exercises = Exercise.objects.filter(user=request.user)
+
+        # display the page of the connected user
+        return render(request, self.template_name, {'user': request.user, 'exercises': exercises})
+
+class PerformanceView(View):
+    template_name = 'performance.html'
 
     def get(self, request):
         exercises = Exercise.objects.filter(user=request.user)
@@ -112,11 +120,11 @@ def exercise_performance_view(request, exercise_id):
 
 # Récupère les 5 dernières performances d'un exercice et retourne les données pour le tableau
 @login_required
-def get_performances_for_exercise(request, exercise_id):
+def get_last_performances(request, exercise_id):
     exercise = Exercise.objects.get(id=exercise_id)
 
     # Récupérer les 5 dernières performances liées à l'exercice
-    performances = Performance.objects.filter(exercise=exercise).order_by('id')[:5]
+    performances = Performance.objects.filter(exercise=exercise).order_by('-id')[:5]
 
     # Récupérer le nombre maximum de sets sur ces performances
     max_sets = max([len(p.repetitions) for p in performances])
@@ -126,7 +134,8 @@ def get_performances_for_exercise(request, exercise_id):
     for performance in performances:
         row = {
             'date': performance.date.strftime('%d/%m/%Y'),
-            'weights': performance.weight + [None] * (max_sets - len(performance.weight))  # Remplir avec None si manque des sets
+            'weights': performance.weights + [None] * (max_sets - len(performance.weights)),  # Remplir avec None si manque des sets
+            'repetitions': performance.repetitions
         }
         performance_data.append(row)
 
