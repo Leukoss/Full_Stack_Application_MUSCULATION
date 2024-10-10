@@ -23,7 +23,7 @@ class Exercise(models.Model):
         super().save(*args,**kwargs)
     
     def __str__(self):
-        return self.name
+        return f'{self.name} - {self.user}'
 
 class Performance(models.Model):
     # Exercise related
@@ -36,7 +36,13 @@ class Performance(models.Model):
     repetitions = models.JSONField()
 
     # Weights related
-    weight = models.JSONField()
+    weights = models.JSONField()
+
+    # to keep the same ammount of set of weights and repetitions
+    def save(self, *args, **kwargs):
+        if len(self.repetitions) != len(self.weights):
+            raise ValueError("Les longueurs des répétitions et des poids doivent être identiques.")
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.exercise.name} - {self.date}'

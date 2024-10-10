@@ -53,7 +53,7 @@
                 <ul>
                     {% for exercise in exercises %}
                         <li>
-                            <a href="#" class="exercise-link" data-id="{{ exercise.id }}">{{ exercise.name }}</a>
+                            <a href="#" class="exercise-link" data-id="{{ exercise.id }}" data-name="{{ exercise.name }}">{{ exercise.name }}</a>
                         </li>
                     {% empty %}
                         <li>Aucun exercice trouvé.</li>
@@ -63,12 +63,15 @@
             </div>
             
             <div class="exercise-panel">
-                Veuillez sélectionner un exercice afin de pouvoir consulter vos données.
-                <p>âge : {{user.userprofile.age}} ans</p>
-                <p>taille : {{user.userprofile.height|floatformat:0}} cm</p>
-                <p>poids : {{user.userprofile.weight|floatformat:0}} kg</p>
-                <p>IMC : {{user.userprofile.bmi|floatformat:0}}</p>
-                <script src="{% static 'js/exercise.js' %}"></script>
+                <div class="information-profile">
+                    Veuillez sélectionner un exercice afin de pouvoir consulter vos données.
+                    <p>âge : {{user.userprofile.age}} ans</p>
+                    <p>taille : {{user.userprofile.height|floatformat:0}} cm</p>
+                    <p>poids : {{user.userprofile.weight|floatformat:0}} kg</p>
+                    <p>IMC : {{user.userprofile.bmi|floatformat:0}}</p>
+                </div>
+                    
+                    <script src="{% static 'js/exercise_performance.js' %}"></script>
             </div>
         </div>
         <!-- Contains the footer of the web page -->

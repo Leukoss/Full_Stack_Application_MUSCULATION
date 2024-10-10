@@ -7,12 +7,11 @@ from .forms import SignUpForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from .models import Exercise
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_backends
 from django.views.generic import DetailView
 from django.http import JsonResponse
-from .models import Exercise
+from .models import Exercise,Performance
 from django.shortcuts import render, redirect, get_object_or_404
 
 class SignUpView(View):
@@ -44,12 +43,17 @@ class SignUpView(View):
         # Set of default exercises for all users
         default_exercises = [
             'Développé couché', 
+            'Développé incliné',
             'Squat', 
             'Soulevé de terre',
             'Curl',
-            'Curl marteau'
+            'Curl marteau',
             'Leg curl',
-            'Leg Extension'
+            'Leg Extension',
+            'Pompe',
+            'Traction',
+            'Développé militaire',
+            'Elevation latérale'
         ]
         for exercise_name in default_exercises:
             Exercise.objects.create(name=exercise_name, user=user)
@@ -70,7 +74,6 @@ class UserProfileView(View):
 
 
     def get(self, request):
-
         exercises = Exercise.objects.filter(user=request.user)
 
         # display the page of the connected user
@@ -78,13 +81,60 @@ class UserProfileView(View):
 
 @login_required
 def get_exercise_detail(request, exercise_id):
-    # Récupérer l'exercice correspondant à l'utilisateur connecté
+    # recover the exercise
     exercise = get_object_or_404(Exercise, id=exercise_id, user=request.user)
     data = {
         'name': exercise.name,
         'illustration': exercise.illustration.url if exercise.illustration else None,
     }
     return JsonResponse(data)
+
+@login_required
+def exercise_performance_view(request, exercise_id):
+
+    # get the exercise
+    exercise = get_object_or_404(Exercise, id=exercise_id, user=request.user)
+    
+    # get the performance linked to the exercise
+    performances = Performance.objects.filter(exercise=exercise)
+
+    # create a dict getting ll the performances
+    performance_data = []
+    for performance in performances:
+        performance_data.append({
+            'date': performance.date.strftime('%Y-%m-%d'),
+            'weights': performance.weights,
+            'repetitions': performance.repetitions
+        })
+
+    return JsonResponse({'performances': performance_data})
+
+
+# Récupère les 5 dernières performances d'un exercice et retourne les données pour le tableau
+@login_required
+def get_performances_for_exercise(request, exercise_id):
+    exercise = Exercise.objects.get(id=exercise_id)
+
+    # Récupérer les 5 dernières performances liées à l'exercice
+    performances = Performance.objects.filter(exercise=exercise).order_by('id')[:5]
+
+    # Récupérer le nombre maximum de sets sur ces performances
+    max_sets = max([len(p.repetitions) for p in performances])
+
+    # Créer les données pour le tableau
+    performance_data = []
+    for performance in performances:
+        row = {
+            'date': performance.date.strftime('%d/%m/%Y'),
+            'weights': performance.weight + [None] * (max_sets - len(performance.weight))  # Remplir avec None si manque des sets
+        }
+        performance_data.append(row)
+
+    return JsonResponse({
+        'exercise': exercise.name,
+        'max_sets': max_sets,
+        'performances': performance_data
+    })
 
 def home(request):
     return render(request, 'home.html', {'user': request.user})

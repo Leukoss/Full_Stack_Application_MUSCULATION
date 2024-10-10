@@ -1,16 +1,15 @@
 html, body {
     height: 100%; /* Assure que le document prend toute la hauteur */
     margin: 0;    /* Enlève les marges par défaut */
+
 }
 
-/* Conteneur principal qui englobe tout */
+/* represents the body of the page - all the content */
 .content-wrapper {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Assure que le conteneur prend toute la hauteur de la page */
+    min-height: 100vh; /* take the entire page */
 }
-
-
 
 /* hidden button to log out*/
 .hidden-button{
@@ -103,6 +102,87 @@ html, body {
     align-items: center;
 }
 
+.information-profile{
+    align-items: center;
+    text-align: center; 
+}
 .exercise-list:hover, .exercise-panel:hover{
     border:1px solid #1A1A1A;
+}
+/* TABLE */
+
+/* Styles de la table */
+/* Styles de la table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Styles des en-têtes */
+table thead th {
+    background-color: #333333;  /* Vert sobre */
+    color: white;
+    padding: 10px;
+    text-align: left;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+/* Styles des lignes de corps de table */
+table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+/* Alternance des couleurs des lignes */
+table tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Gris clair pour les lignes paires */
+}
+
+/* Styles des cellules de table */
+table td {
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+    text-align: center; /* Centre le texte dans les cellules */
+    vertical-align: middle; /* Centre verticalement si nécessaire */
+}
+
+table {
+    text-align: center; /* Centre le texte dans les cellules */
+    vertical-align: middle; /* Centre verticalement si nécessaire */
+}
+
+/* Effet de survol des lignes */
+table tbody tr:hover {
+    background-color: #e0e0e0;
+}
+
+/* Bordures arrondies pour le premier et dernier en-tête */
+table thead th:first-child {
+    border-top-left-radius: 8px;
+}
+
+table thead th{
+    text-align: center; /* Centre le texte dans les cellules */
+    vertical-align: middle; /* Centre verticalement si nécessaire */    
+}
+
+table thead th:last-child {
+    border-top-right-radius: 8px;
+}
+
+/* Premier et dernier td pour des bordures arrondies */
+table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
 }
