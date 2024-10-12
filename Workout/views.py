@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import SignUpForm
+from .forms import SignUpForm,ExerciseForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -83,9 +83,22 @@ class ExerciseView(View):
 
     def get(self, request):
         exercises = Exercise.objects.filter(user=request.user)
+        form = ExerciseForm()  
+        return render(request, self.template_name, {'user': request.user, 'exercises': exercises, 'form': form})
 
-        # display the page of the connected user
-        return render(request, self.template_name, {'user': request.user, 'exercises': exercises})
+    def post(self, request):
+        form = ExerciseForm(request.POST)  
+
+        if form.is_valid():
+            exercise = form.save(commit=False)  
+            exercise.user = request.user  
+            exercise.save()  # Sauvegardez l'exercice
+            return redirect('exercise_view_name')
+        # Si le formulaire n'est pas valide, affichez à nouveau la page avec les erreurs
+        exercises = Exercise.objects.filter(user=request.user)
+        return render(request, self.template_name, {'user': request.user, 'exercises': exercises, 'form': form})
+    
+
 
 @login_required
 def get_exercise_detail(request, exercise_id):
@@ -97,6 +110,7 @@ def get_exercise_detail(request, exercise_id):
     }
     return JsonResponse(data)
 
+# View that get all the performances of a user on a specific exercise
 @login_required
 def exercise_performance_view(request, exercise_id):
 
@@ -118,20 +132,24 @@ def exercise_performance_view(request, exercise_id):
     return JsonResponse({'performances': performance_data})
 
 
-# Récupère les 5 dernières performances d'un exercice et retourne les données pour le tableau
+# Get the 5 last performances of the user on a exercise
 @login_required
 def get_last_performances(request, exercise_id):
     exercise = Exercise.objects.get(id=exercise_id)
 
-    # Récupérer les 5 dernières performances liées à l'exercice
+    # last 5 performance of a specific exercise
     performances = Performance.objects.filter(exercise=exercise).order_by('-id')[:5]
 
-    # Récupérer le nombre maximum de sets sur ces performances
-    max_sets = max([len(p.repetitions) for p in performances])
+    # get the maximum number of set for a given performance
+    if performances:
+        max_sets = max([len(p.repetitions) for p in performances])
+    else:
+        max_sets = 0  
 
-    # Créer les données pour le tableau
+    # create datas for the table
     performance_data = []
     for performance in performances:
+        # get the data to plot to the table
         row = {
             'date': performance.date.strftime('%d/%m/%Y'),
             'weights': performance.weights + [None] * (max_sets - len(performance.weights)),  # Remplir avec None si manque des sets
@@ -144,6 +162,7 @@ def get_last_performances(request, exercise_id):
         'max_sets': max_sets,
         'performances': performance_data
     })
+
 
 def home(request):
     return render(request, 'home.html', {'user': request.user})

@@ -62,7 +62,19 @@
             </div>
             
             <div class="exercise-panel">
-                <!-- to fill -->
+                <h3>Nouvel exercice</h3>
+
+                <form class="exercise_form" method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="id_name"></label>
+                        {{ form.name }}  
+                        <div class="error">{{ form.name.errors }}</div>
+                    </div>
+
+                    <button type="submit" class="btn">Ajouter</button>
+                </form>
             </div>
         </div>
         <!-- Contains the footer of the web page -->

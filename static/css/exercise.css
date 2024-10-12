@@ -112,3 +112,80 @@ html, body {
     justify-content: center;
 }
 
+/* FORMS */
+/* Styles for the form container */
+
+.exercise_form {
+    max-width: 700px; 
+    margin: auto; 
+    padding: 20px; 
+
+}
+
+.form-group {
+    margin-bottom: 20px; /* Space between form groups */
+}
+
+/* Style for labels */
+.form-group label {
+    display: block; /* Make labels block elements */
+    margin-bottom: 10px; /* Space between label and input */
+    font-weight: bold; /* Bold label text */
+    color: #333; /* Dark text color */
+}
+
+/* Style for input fields */
+.form-group input,.form-group select {
+    width: 70%; 
+    padding: 10px; 
+    border: 1px solid #ccc;
+    border-radius: 4px; 
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); 
+    transition: border-color 0.3s; 
+    text-align: center; 
+}
+
+/* Focus effect for input fields */
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #555; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+/* Error message styling */
+.error {
+    color: red; /* Red for error messages */
+    font-size: 0.9rem; /* Slightly smaller font */
+    margin-top: 5px; /* Space above the error message */
+}
+
+/* Button styling */
+.btn {
+    width: 100%; /* Full width */
+    padding: 10px; /* Inner padding */
+    background-color: #1A1A1A; /* Blue background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 1rem; /* Font size */
+    transition: background-color 0.3s; /* Transition for hover */
+}
+
+/* Button hover effect */
+.btn:hover {
+    background-color: #555; /* Darker blue on hover */
+}
+
+/* Remove bullet points from error messages */
+ul.errorlist {
+    list-style-type: none; /* Remove bullets */
+    padding-left: 0; /* Remove any left padding */
+}
+
+ul.errorlist li {
+    color: red; /* Keep the error text red */
+    font-size: 0.9rem; /* Slightly smaller font */
+    margin-top: 5px; /* Space above the error message */
+}
+
