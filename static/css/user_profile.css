@@ -53,13 +53,16 @@ html, body {
 .exercise-list {
     /* max-height: 400px; Hauteur maximale de la liste */
     overflow-y: auto; 
-    /* border: 1px solid #ccc;  */
+
     margin: 2%; 
     padding: 10px; 
     background-color: #f9f9f9; 
     width:20%;
     border-radius: 5px;
     border:1px solid #ccc;
+
+    max-height: 400px; 
+    overflow-y: auto; 
 }
 
 .exercise-list ul {

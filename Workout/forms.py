@@ -3,10 +3,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from pycountry import countries
-from .models import Exercise
-
-from .models import UserProfile
-
+from .models import Exercise, UserProfile,Performance
 
 class SignUpForm(UserCreationForm):
     username = forms.CharField(
@@ -109,7 +106,6 @@ class ExerciseForm(forms.ModelForm):
         })
     )
 
-
     class Meta:
         model = Exercise
         exclude = ["user","exercise_id"]
@@ -117,3 +113,17 @@ class ExerciseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ExerciseForm, self).__init__(*args, **kwargs)
 
+class PerformanceForm(forms.ModelForm):
+    
+    repetitions = forms.CharField(
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'ex: 12, 10, 8'})
+    )
+    weights = forms.CharField(
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'ex: 50, 45, 40'})
+    )
+
+    class Meta:
+        model = Performance
+        fields = ['repetitions', 'weights']

@@ -64,16 +64,16 @@
             <div class="exercise-panel">
                 <h3>Nouvel exercice</h3>
 
-                <form class="exercise_form" method="POST" action="" enctype="multipart/form-data">
+                <form id='exercise-form' class="exercise_form" method="POST" action="" enctype="multipart/form-data">
                     {% csrf_token %}
                     
                     <div class="form-group">
                         <label for="id_name"></label>
-                        {{ form.name }}  
-                        <div class="error">{{ form.name.errors }}</div>
+                        {{ exercise_form.name }}  
+                        <div class="error">{{ exercise_form.name.errors }}</div>
                     </div>
 
-                    <button type="submit" class="btn">Ajouter</button>
+                    <button type="submit" name="exercise" class="btn">Ajouter</button>
                 </form>
             </div>
         </div>
@@ -106,5 +106,8 @@
             </div>
         </footer>
     </div>
+    <!-- Inclure le fichier JavaScript -->
+    <script src="{% static 'js/performance.js' %}"></script>
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 </body>
 </html>

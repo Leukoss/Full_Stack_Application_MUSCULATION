@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import SignUpForm,ExerciseForm
+from .forms import SignUpForm,ExerciseForm,PerformanceForm
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -13,6 +13,7 @@ from django.views.generic import DetailView
 from django.http import JsonResponse
 from .models import Exercise,Performance
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 
 class SignUpView(View):
     form_class = SignUpForm
@@ -78,26 +79,104 @@ class UserProfileView(View):
         # display the page of the connected user
         return render(request, self.template_name, {'user': request.user, 'exercises': exercises})
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Exercise, Performance
+from .forms import PerformanceForm, ExerciseForm
+
 class ExerciseView(View):
     template_name = 'exercise.html'
 
     def get(self, request):
         exercises = Exercise.objects.filter(user=request.user)
-        form = ExerciseForm()  
-        return render(request, self.template_name, {'user': request.user, 'exercises': exercises, 'form': form})
+        exercise_form = ExerciseForm()  # Formulaire pour ajouter un exercice
+        performance_form = PerformanceForm()  # Formulaire pour ajouter une performance
+        return render(request, self.template_name, {
+            'user': request.user,
+            'exercises': exercises,
+            'exercise_form': exercise_form,
+            'performance_form': performance_form,
+        })
 
     def post(self, request):
-        form = ExerciseForm(request.POST)  
-
-        if form.is_valid():
-            exercise = form.save(commit=False)  
-            exercise.user = request.user  
-            exercise.save()  # Sauvegardez l'exercice
-            return redirect('exercise_view_name')
-        # Si le formulaire n'est pas valide, affichez à nouveau la page avec les erreurs
         exercises = Exercise.objects.filter(user=request.user)
-        return render(request, self.template_name, {'user': request.user, 'exercises': exercises, 'form': form})
-    
+        exercise_form = ExerciseForm()
+        performance_form = PerformanceForm()
+
+        # Handle Exercise Submission
+        if 'exercise' in request.POST:
+            exercise_form = ExerciseForm(request.POST)
+            if exercise_form.is_valid():
+                exercise = exercise_form.save(commit=False)
+                exercise.user = request.user
+                exercise.save()
+                return redirect('exercise_view_name')
+
+        # Handle Performance Submission
+        if 'performance' in request.POST:
+            # Imprimer les données POST pour le débogage
+            print("Données reçues de POST :", request.POST)
+
+            performance_form = PerformanceForm(request.POST)
+            if performance_form.is_valid():
+
+                exercise_id = request.POST.get('exercise_id')
+                if exercise_id:
+
+                    try:
+                        exercise = Exercise.objects.get(id=exercise_id)
+
+                        # Récupérer les poids et répétitions
+                        weights_str = request.POST.getlist('weights')
+                        repetitions_str = request.POST.getlist('repetitions')
+
+                        print("Voici les poids en str :" + " ".join(str(e) for e in weights_str))
+                        print("Voici les poids en str :" + " ".join(str(e) for e in repetitions_str))
+
+                        # Vérifier les champs vides
+                        if not weights_str or not repetitions_str:
+                            messages.error(request, "Les poids et les répétitions ne peuvent pas être vides.")
+                            return render(request, self.template_name, {'user': request.user, 'exercises': exercises, 'exercise_form': exercise_form, 'performance_form': performance_form})
+
+                        # Convertir les chaînes en listes de nombres
+                        weights = [float(weight.strip()) for weight in weights_str if weight.strip()]
+                        print("Poids" + " ".join(str(e) for e in weights))
+                        repetitions = [int(repetition.strip()) for repetition in repetitions_str if repetition.strip()]
+                        print("Repetitions " + " ".join(str(e) for e in repetitions))
+                        
+                        # Vérifier si les longueurs correspondent
+                        if len(weights) != len(repetitions):
+                            messages.error(request, "Le nombre de poids et de répétitions doit être identique.")
+                        else:
+                            performance = performance_form.save(commit=False)
+                            performance.exercise = exercise
+                            performance.weights = weights  # Enregistrer en tant que JSON
+                            performance.repetitions = repetitions  # Enregistrer en tant que JSON
+                            performance.save()
+
+                            # Imprimer les données de performance dans le terminal
+                            print(f'Performance enregistrée : Exercice: {exercise.name}, Date: {performance.date}, Poids: {weights}, Répétitions: {repetitions}')
+
+                            messages.success(request, "Performance ajoutée avec succès.")
+                            return redirect('exercise_view_name')
+
+                    except Exercise.DoesNotExist:
+                        messages.error(request, "L'exercice sélectionné n'existe pas.")
+                else:
+                    messages.error(request, "ID de l'exercice manquant.")
+
+            else:
+                print("Le formulaire de performance n'est pas valide")
+                print(performance_form.errors)  # Afficher les erreurs de validation
+                messages.error(request, "Le formulaire de performance contient des erreurs.")
+
+        # Rendre le template avec les performances
+        return render(request, self.template_name, {
+            'user': request.user,
+            'exercises': exercises,
+            'exercise_form': exercise_form,
+            'performance_form': performance_form,
+        })
 
 
 @login_required

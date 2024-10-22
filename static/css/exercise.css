@@ -59,6 +59,9 @@ html, body {
     width:20%;
     border-radius: 5px;
     border:1px solid #ccc;
+
+    max-height: 400px; 
+    overflow-y: auto; 
 }
 
 .exercise-list ul {
@@ -189,3 +192,8 @@ ul.errorlist li {
     margin-top: 5px; /* Space above the error message */
 }
 
+#add-set-btn{
+    margin-top: 2%;
+    margin-bottom: 2%;
+
+}
