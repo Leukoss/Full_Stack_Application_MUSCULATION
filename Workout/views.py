@@ -1,7 +1,7 @@
+import json
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import render, redirect
 from django.views import View
 from .forms import SignUpForm,ExerciseForm,PerformanceForm
 from django.utils.decorators import method_decorator
@@ -14,6 +14,8 @@ from django.http import JsonResponse
 from .models import Exercise,Performance
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+
+
 
 class SignUpView(View):
     form_class = SignUpForm
@@ -68,6 +70,29 @@ class CustomLoginView(LoginView):
         # go to the profile page
         return self.get_redirect_url() or reverse('user_profile')
 
+class ExerciseDetailView(View):
+    
+    def get(self, request, exercise_id):
+        exercise = get_object_or_404(Exercise, id=exercise_id)
+        performances = Performance.objects.filter(exercise=exercise).order_by("date").values('date', 'weights', 'repetitions') # Récupérez toutes les performances pour cet exercice
+
+        # tab of performances
+        performances_list = [
+            {
+                'date': performance['date'].strftime('%d-%m-%Y'), #convert date to this format (day-month-year)
+                'weights': performance['weights'],
+                'repetitions': performance['repetitions']
+            }
+            for performance in performances
+        ]
+
+        performances_json = json.dumps(performances_list)
+
+        return render(request, 'exercise_detail.html', {
+            'exercise': exercise,
+            'performances': performances_json,
+        })
+
 # View of the page of the user
 @method_decorator(login_required, name='dispatch')
 class UserProfileView(View):
@@ -79,10 +104,7 @@ class UserProfileView(View):
         # display the page of the connected user
         return render(request, self.template_name, {'user': request.user, 'exercises': exercises})
 
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .models import Exercise, Performance
-from .forms import PerformanceForm, ExerciseForm
+
 
 class ExerciseView(View):
     template_name = 'exercise.html'
@@ -143,7 +165,7 @@ class ExerciseView(View):
                         print("Poids" + " ".join(str(e) for e in weights))
                         repetitions = [int(repetition.strip()) for repetition in repetitions_str if repetition.strip()]
                         print("Repetitions " + " ".join(str(e) for e in repetitions))
-                        
+
                         # Vérifier si les longueurs correspondent
                         if len(weights) != len(repetitions):
                             messages.error(request, "Le nombre de poids et de répétitions doit être identique.")

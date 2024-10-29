@@ -22,35 +22,37 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (data.performances.length > 0) {              
 
                         let table = `<h3>Performances ${exerciseName}</h3>`;
-                        // Créer le tableau HTML avec les colonnes pour chaque set et les lignes pour chaque date
+                        
                         table += '<table border="1">';
                         table += '<thead><tr><th>Date</th>';
 
-                        // Ajouter les colonnes pour chaque set
+                        // add columns for each set
                         for (let i = 0; i < data.max_sets; i++) {
                             table += `<th>Set ${i+1} </th>`;
                         }
                         table += '</tr></thead>';
 
-                        // Ajouter les lignes pour chaque performance
+                        
                         table += '<tbody>';
                         data.performances.forEach(performance => {
                             table += `<tr><td>${performance.date}</td>`;
-                            // Boucle à travers les poids et les répétitions
+
                             performance.weights.forEach((weight, index) => {
-                                // Vérifiez si le poids et les répétitions existent
+                
                                 if (weight !== null && performance.repetitions[index] !== null) {
-                                    // Formatez l'affichage comme '12 x 60 kg'
+
                                     table += `<td>${performance.repetitions[index]} x ${weight} kg</td>`;
                                 } else {
-                                    table += '<td>-</td>'; // Si pas de poids ou de répétition pour ce set
+                                    table += '<td>-</td>'; 
                                 }
                             });
                         });
                         table += '</tbody></table>';
 
-                        // Afficher le tableau dans l'exercise-panel
                         exercisePanel.innerHTML = table;
+
+                        exercisePanel.innerHTML += `<div><a href="/exercise/${exerciseId}/detail" class="see-more">Voir plus</a></div>`;
+
                     } else {
                         // no performances found
                         exercisePanel.innerHTML = '<p>Aucune performance trouvée pour cet exercice.</p>';
