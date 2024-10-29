@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from pycountry import countries
 from .models import Exercise, UserProfile,Performance
+from django.core.exceptions import ValidationError
 
 class SignUpForm(UserCreationForm):
     username = forms.CharField(
@@ -26,6 +27,17 @@ class SignUpForm(UserCreationForm):
         widget=forms.PasswordInput(
             attrs={'placeholder': 'Confirmer le mot de passe'})
     )
+    GENDER_CHOICES = [
+        ('H', 'Homme'),
+        ('F', 'Femme'),
+        ('A', 'Autre')
+    ]
+
+    gender = forms.ChoiceField(
+        required=True,
+        choices=GENDER_CHOICES,
+        widget=forms.Select(attrs={'placeholder': 'Sexe'})
+    )
     age = forms.IntegerField(
         required=True,
         widget=forms.NumberInput(attrs={'placeholder': 'Âge',
@@ -45,7 +57,7 @@ class SignUpForm(UserCreationForm):
         required=True,
         choices=[(1.2, 'Sédentaire'), (1.375, 'Légèrement Actif'),
                  (1.55, 'Actif'), (1.725, 'Très Actif'),
-                 (1.9, 'Extrêmement acitf')],
+                 (1.9, 'Extrêmement actif')],
         widget=forms.Select(attrs={'placeholder': 'Niveau d\'activité'})
     )
     country = forms.ChoiceField(
@@ -56,9 +68,23 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = (
-        'username', 'email', 'password1', 'password2', 'age', 'weight',
+        'username', 'email', 'password1', 'password2','gender', 'age', 'weight',
         'height', 'activity', 'country')
 
+
+    # test age to get a positive value
+    def clean_age(self):
+        age = self.cleaned_data.get('age')
+        if age < 0:
+            raise ValidationError("L'âge ne peut pas être négatif.")
+        return age
+    
+    def clean_weigth(self):
+        weight = self.cleaned_data.get('weight')
+        if weight < 0:
+            raise ValidationError("Le poids ne peut pas être négatif.")
+        return weight
+    
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
         self.fields['country'].choices = [(country.alpha_2, country.name) for

@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 import uuid
+from django.core.exceptions import ValidationError
 
 class Exercise(models.Model):
 
@@ -50,6 +51,9 @@ class Performance(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    # gender of user - man / woman / other
+    gender = models.CharField(max_length=100, default="A" )
+
     # To determine age
     age = models.IntegerField(null=True, blank=True)
 
@@ -75,7 +79,12 @@ class UserProfile(models.Model):
         if self.weight and self.height:
             return round(self.weight / ((self.height / 100) **2), 2)
         return None
-
+    
+    def clean(self):
+        super().clean()
+        if self.age < 0:
+            raise ValidationError({'age': "L'âge ne peut pas être négatif."})
+        
     def save(self, *args, **kwargs):
         self.bmi = self.calculate_bmi()
         super(UserProfile, self).save(*args, **kwargs)

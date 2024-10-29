@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         exercisePanel.innerHTML = table;
 
-                        exercisePanel.innerHTML += `<div><a href="/exercise/${exerciseId}/detail" class="see-more">Voir plus</a></div>`;
+                        exercisePanel.innerHTML += `<div class="see-more-div"><a class="see-more" href="/exercise/${exerciseId}/detail" class="see-more">Voir plus</a></div>`;
 
                     } else {
                         // no performances found

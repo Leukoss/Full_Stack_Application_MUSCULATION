@@ -29,7 +29,7 @@
         <!-- Div containing links to other pages -->
         <a href="{% url 'login' %}">Connexion</a>
         <a href="{% url 'signup' %}">Inscription</a>
-        <a href="{% url 'logout' %}">Présentation du Projet</a>
+        <a href="{% url 'home' %}">Présentation du Projet</a>
     </nav>
     
     <div class="content">
@@ -73,7 +73,8 @@
                 {{ form.age }}
                 <div class="error">{{ form.age.errors }}</div>
             </div>
-        
+
+
             <!-- WEIGHT -->
             <div class="form-group">
                 <label for="id_weight">Poids (kg) :</label>
@@ -87,6 +88,13 @@
                 {{ form.height }}
                 <div class="error">{{ form.height.errors }}</div>
             </div>
+
+            <!-- AGE -->
+            <div class="form-group">
+                <label for="id_gender">Sexe :</label>
+                {{ form.gender }}
+                <div class="error">{{ form.gender.errors }}</div>
+            </div>            
         
             <!-- ACTIVITY -->
             <div class="form-group">

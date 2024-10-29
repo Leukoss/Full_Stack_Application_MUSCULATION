@@ -30,7 +30,7 @@ class SignUpView(View):
         if form.is_valid():
             
             user = form.save()
-
+            user.backend = 'allauth.account.auth_backends.AuthenticationBackend'
             # creation of exercises for a user
             self.create_default_exercises(user)
 

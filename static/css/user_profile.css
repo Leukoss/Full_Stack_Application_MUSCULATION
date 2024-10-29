@@ -191,3 +191,23 @@ table tbody tr:last-child td:first-child {
 table tbody tr:last-child td:last-child {
     border-bottom-right-radius: 8px;
 }
+
+/* link to see other performances */
+.see-more {
+    margin-top: 5%;
+    text-decoration: none;
+    color: #1E90FF; 
+    font-weight: bold; 
+    border-radius: 4px; 
+    background-color: transparent; 
+    transition: background-color 0.3s, color 0.3s; 
+}
+
+/* Style lors du survol */
+.see-more:hover {
+    color: #0056b3; 
+}
+
+.see-more-div{
+    margin-top: 2%;
+}
