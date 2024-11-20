@@ -62,6 +62,9 @@ Il faut se rendre sur : https://github.com/Leukoss/Full_Stack_Application_MUSCUL
 3. Ouvrir deux terminals dans le répertoire du projet
 -dans le premier terminal  : **docker-compose up --build**
 -dans le second : **docker-compose exec web python manage.py migrates**
--puis : **docker-compose exec web python manage.py makemigrations**
 
 4. Se rendre sur : http://localhost:8080/
+
+5. Profitez des fonctionalités de Coachella, créer un compte, ajouter des exercices et des performances pour visualiser les graphiques.
+
+END
